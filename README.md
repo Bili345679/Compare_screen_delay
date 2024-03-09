@@ -1,4 +1,5 @@
 # 对比屏幕间延迟
+使用说明 | [HOW TO USE](https://github.com/Bili345679/Compare_screen_delay/blob/main/README_EN.md)
 
 这个程序会在每个屏幕上生成一个最大化窗口，显示从 `time.perf_counter()` 获取的时间，以及基于该时间的时间进度条。在进度条中，`#` 代表该秒已经过的毫秒数，而 `.` 代表该秒未经过的毫秒数。
 

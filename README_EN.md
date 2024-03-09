@@ -21,6 +21,6 @@ To customize the program, create a `config.json` file in the same directory as t
   "show_progress": true
 }
 ```
-time_size: Time display size (default: 200).
-progress_size: Progress bar size (default: 15).
-show_progress: Display progress bar (default: true). Set to false if you don’t want to show the progress bar.
+time_size: Time display size (default: 200).\<br>
+progress_size: Progress bar size (default: 15).\<br>
+show_progress: Display progress bar (default: true). Set to false if you don’t want to show the progress bar.\<br>

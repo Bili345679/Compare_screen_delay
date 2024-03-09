@@ -25,7 +25,7 @@
   "progress_size": 15,
   "show_progress": true
 }
-
-time_size：时间尺寸，默认为 200。
-progress_size：进度条尺寸，默认为 15。
-show_progress：是否显示进度条，默认为 true。如果您不想显示进度条，请将其改为 false。
+```
+time_size：时间尺寸，默认为 200。<br>
+progress_size：进度条尺寸，默认为 15。<br>
+show_progress：是否显示进度条，默认为 true。如果您不想显示进度条，请将其改为 false。<br>

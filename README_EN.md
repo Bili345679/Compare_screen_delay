@@ -1,5 +1,7 @@
 # Screen Delay Comparison
 
+HOW TO USE | [使用说明](https://github.com/Bili345679/Compare_screen_delay/blob/main/README.md)
+
 This program creates a maximized window on each screen, displaying the time obtained from `time.perf_counter()`, along with a time progress bar based on that time. In the progress bar, `#` represents the milliseconds that have passed in that second, while `.` represents the remaining milliseconds.
 
 ## Testing Method

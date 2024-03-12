@@ -18,11 +18,13 @@ To customize the program, create a `config.json` file in the same directory as t
 
 ```json
 {
-  "time_size": 200,
-  "progress_size": 15,
-  "show_progress": true
+  "show_ms_array": true,
+  "time_size": 250,
+  "ms_array_size": 20,
+  "refresh_interval": 1
 }
 ```
-time_size: Time display size (default: 200).<br>
-progress_size: Progress bar size (default: 15).<br>
-show_progress: Display progress bar (default: true). Set to false if you don’t want to show the progress bar.<br>
+show_ms_array: Whether to display the progress bar, default is true. If you do not want to display the progress bar, please change it to false.<br>
+time_size: Time character size, default is 250.<br>
+ms_array_size: Millisecond array character size, default is 20.<br>
+refresh_interval: Refresh interval between time characters and millisecond array characters, in milliseconds (ms), default value is 1.<br>

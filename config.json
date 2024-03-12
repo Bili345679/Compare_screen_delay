@@ -1,5 +1,6 @@
 {
-    "time_size": 200,
-    "progress_size": 15,
-    "show_progress": true
+    "show_ms_array": true,
+    "time_size": 250,
+    "ms_array_size": 20,
+    "refresh_interval": 1
 }

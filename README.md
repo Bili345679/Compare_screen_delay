@@ -22,13 +22,11 @@
 
 ```json
 {
-  "show_ms_array": true,
-  "time_size": 250,
-  "ms_array_size": 20,
-  "refresh_interval": 1
+  "time_size": 200,
+  "progress_size": 15,
+  "show_progress": true
 }
 ```
-show_ms_array：是否显示进度条，默认为 true。如果您不想显示进度条，请将其改为 false。<br>
-time_size：时间字符尺寸，默认为 250。<br>
-ms_array_size：毫秒阵列字符尺寸，默认为 20。<br>
-refresh_interval：时间字符与毫秒阵列字符刷新时间间隔，单位为毫秒(ms)，默认值为 1。<br>
+time_size：时间尺寸，默认为 200。<br>
+progress_size：进度条尺寸，默认为 15。<br>
+show_progress：是否显示进度条，默认为 true。如果您不想显示进度条，请将其改为 false。<br>

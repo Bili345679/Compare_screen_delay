@@ -1,83 +1,104 @@
-import tkinter as tk
-from screeninfo import get_monitors
-import os, json, time
+import sys, os, time, json
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QVBoxLayout, QWidget
+from PyQt5.QtGui import QFont
+from PyQt5.QtCore import QTimer
 
 
-class ScreenWindow(tk.Tk):
+def format_ms_progress(n):
+    result = []
+    for i in range(10):
+        row = []
+        for j in range(10):
+            if n > 0:
+                row.append(f"{j} {'#' * min(10, n)}{'.' * max(0, 10 - n)}")
+                n -= 10
+            else:
+                row.append(f"{j} {'.' * 10}")
+        row.append("10")
+        result.append(" ".join(row))
+    return "\n".join(result)
+
+
+class MainWindow(QMainWindow):
     def __init__(
-        self,
-        screen,
-        windows,
-        show_ms_array=True,
-        time_size=250,
-        ms_array_size=20,
-        refresh_interval=1,
+        self, screen, windows, show_progress=True, time_size=200, progress_size=15, **kwargs
     ):
-        super(ScreenWindow, self).__init__()
-        self.geometry(f"{100}x{50}+{screen.x}+{screen.y}")
-        self.state("zoomed")
-
-        self.show_ms_array = show_ms_array
-        self.refresh_interval = refresh_interval
-
-        self.time = tk.Label(self, font=("TkDefaultFont", time_size, "normal"))
-        self.time.pack()
-        self.ms_array = tk.Label(self, font=("TkDefaultFont", ms_array_size, "normal"))
-        self.ms_array.pack()
-        self.protocol("WM_DELETE_WINDOW", self.on_closing)
+        super(MainWindow, self).__init__()
+        self.screen = screen
         self.windows = windows
+        self.time_size = time_size
+        self.progress_size = progress_size
+        self.show_progress = show_progress
+        print(time_size)
+        print(progress_size)
+        self.initUI()
 
-        self.update_time()
+    def initUI(self):
+        self.layout = QVBoxLayout()
 
-    def on_closing(self):
+        self.time = QLabel(self)
+        font = QFont()
+        font.setPointSize(self.time_size)
+        self.time.setFont(font)
+        self.layout.addWidget(self.time)
+
+        if self.show_progress:
+            self.progress = QLabel(self)
+            font = QFont()
+            font.setPointSize(self.progress_size)
+            self.progress.setFont(font)
+            self.layout.addWidget(self.progress)
+
+        self.layout.addStretch(1)
+
+        self.central_widget = QWidget()
+        self.central_widget.setLayout(self.layout)
+
+        self.setCentralWidget(self.central_widget)
+
+        self.update_timer()
+
+        rect = self.screen.geometry()
+        self.setGeometry(rect)
+
+        self.showMaximized()
+
+    def update_timer(self):
+        value = str(time.perf_counter())
+        value = value[value.index(".") - 1 :]
+
+        if self.show_progress:
+            ms_num = int(value[2:5])
+            self.progress.setText(format_ms_progress(ms_num))
+            self.progress.adjustSize()
+
+        self.time.setText(value)
+        self.time.adjustSize()
+
+        QTimer.singleShot(1, self.update_timer)
+
+    def closeEvent(self, event):
         for window in self.windows:
-            window.destroy()
-
-    def update_time(self):
-        time_value = str(time.perf_counter())
-        time_value = time_value[time_value.index(".") - 1 :].ljust(9)
-        self.time.config(text=time_value)
-        if self.show_ms_array:
-            self.update_ms_array(time_value)
-        self.after(self.refresh_interval, self.update_time)
-
-    def update_ms_array(self, time_value):
-        ms_count = int(time_value[2:5])
-        result = []
-        for i in range(20):
-            row = [str(i + 1).rjust(5)]
-            for j in range(5):
-                if ms_count > 0:
-                    row.append(
-                        f"{j} {'■' * min(10, ms_count)}{'□' * max(0, 10 - ms_count)}"
-                    )
-                    ms_count -= 10
-                else:
-                    row.append(f"{j} {'□' * 10}")
-            row.append(str(j + 1))
-            result.append(" ".join(row))
-        self.ms_array.config(text="\n".join(result))
+            window.close()
 
 
 def main():
-    windows = []
     config = {}
     if os.path.exists("./config.json"):
         with open("./config.json", "r") as file:
-            temp_config = json.load(file)
-            for each_key in [
-                "show_ms_array",
-                "time_size",
-                "ms_array_size",
-                "refresh_interval",
-            ]:
-                if each_key in temp_config:
-                    config[each_key] = temp_config[each_key]
+            config = json.load(file)
+            print(config)
 
-    for screen in get_monitors():
-        window = ScreenWindow(screen, windows, **config)
-        windows.append(window)
-    tk.mainloop()
+    app = QApplication(sys.argv)
+
+    windows = []
+    for screen in app.screens():
+        win = MainWindow(screen, windows, **config)
+        windows.append(win)
+        win.show()
+
+    sys.exit(app.exec_())
 
 
 if __name__ == "__main__":
